@@ -1,12 +1,13 @@
 <template>
   <div>
     <button
-      :class="[`button-${variant}-${color}`, border, buttonSize]"
-      class="button flex flex-row justify-center items-center"
+      :disabled="disabled"
+      :class="[disabled ? `disabled-${variant}` : `button button-${variant}-${color}`, border, buttonSize, shadow]"
+      class="flex flex-row justify-center items-center noto-font mt-4"
     >
-      <i v-if="startIcon" class="material-icons mr-2 text-sm">startIcon</i>
+      <i v-if="startIcon" class="material-icons mr-2 text-sm">{{ startIcon }}</i>
       Default
-      <i v-if="endIcon" class="material-icons ml-2 text-sm">endIcon</i>
+      <i v-if="endIcon" class="material-icons ml-2 text-sm">{{ endIcon }}</i>
     </button>
   </div>
 </template>
@@ -33,13 +34,14 @@ export default {
       return this.variant === "outline" ? "border-2" : "";
     },
     buttonSize() {
-      let size = "py-2 pl-3 pr-4";
+      let size = "py-2 px-4";
+
       switch (this.size) {
         case "md":
-          size = "py-3 pl-4 pr-5";
+          size = "py-3 px-6";
           break;
         case "lg":
-          size = "py-4 pl-5 pr-6";
+          size = "py-4 px-8";
           break;
         default:
           //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
@@ -48,14 +50,37 @@ export default {
 
       return size;
     },
+    shadow() {
+      return !this.disableShadow && this.variant === "normal" && !this.disabled
+        ? "shadow-lg"
+        : "";
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.disabled {
+  &-normal {
+    @apply bg-default;
+    @apply text-default-disabled;
+    @apply rounded-lg;
+  }
+  &-outline {
+    @apply bg-default;
+    @apply text-default-disabled;
+    @apply rounded-lg;
+  }
+  &-text {
+    @apply bg-white;
+    @apply text-default-disabled;
+    @apply px-0;
+    @apply py-2;
+  }
+}
+
 .button {
   @apply rounded-lg;
-  @apply shadow-md;
   @apply text-gray-800;
 
   &-normal {
@@ -64,18 +89,38 @@ export default {
     &-primary {
       @apply bg-primary;
       @apply text-white;
+
+      &:hover,
+      &:focus {
+        @apply bg-primary-darker;
+      }
     }
     &-secondary {
-      @apply bg-secundary;
+      @apply bg-secondary;
       @apply text-white;
+
+      &:hover,
+      &:focus {
+        @apply bg-secondary-darker;
+      }
     }
     &-default {
       @apply bg-default;
-      @apply text-secundary;
+      @apply text-secondary;
+
+      &:hover,
+      &:focus {
+        @apply bg-default-darker;
+      }
     }
     &-danger {
       @apply bg-danger;
       @apply text-white;
+
+      &:hover,
+      &:focus {
+        @apply bg-danger-darker;
+      }
     }
   }
 
@@ -86,19 +131,95 @@ export default {
     &-primary {
       @apply border-primary;
       @apply text-primary;
+
+      &:hover,
+      &:focus {
+        @apply bg-primary-lighter;
+      }
     }
     &-secondary {
-      @apply border-secundary;
-      @apply text-secundary;
+      @apply border-secondary;
+      @apply text-secondary;
+
+      &:hover,
+      &:focus {
+        @apply bg-secondary-lighter;
+      }
+    }
+    &-danger {
+      @apply border-danger;
+      @apply text-danger;
+
+      &:hover,
+      &:focus {
+        @apply bg-danger-lighter;
+      }
+    }
+    &-default {
+      @apply text-gray-800;
+      @apply border-gray-800;
+
+      &:hover,
+      &:focus {
+        @apply bg-gray-200;
+      }
     }
   }
 
   &-text {
     @apply bg-white;
+
     &-primary {
       @apply text-primary;
-      @apply shadow-none;
-      @apply p-0;
+      @apply px-0;
+      @apply py-2;
+
+      &:hover,
+      &:focus {
+        @apply bg-primary-lighter;
+        @apply text-primary;
+        @apply py-2;
+        @apply px-4;
+      }
+    }
+    &-secondary {
+      @apply text-secondary;
+      @apply px-0;
+      @apply py-2;
+
+      &:hover,
+      &:focus {
+        @apply bg-secondary-lighter;
+        @apply text-secondary;
+        @apply py-2;
+        @apply px-4;
+      }
+    }
+    &-default {
+      @apply text-default-darker;
+      @apply px-0;
+      @apply py-2;
+
+      &:hover,
+      &:focus {
+        @apply bg-default-lighter;
+        @apply text-default-darker;
+        @apply py-2;
+        @apply px-4;
+      }
+    }
+    &-danger {
+      @apply text-danger;
+      @apply px-0;
+      @apply py-2;
+
+      &:hover,
+      &:focus {
+        @apply bg-danger-lighter;
+        @apply text-danger;
+        @apply py-2;
+        @apply px-4;
+      }
     }
   }
 }

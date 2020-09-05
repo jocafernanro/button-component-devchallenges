@@ -1,5 +1,7 @@
 <template>
-  <span class="text-gray-800 text-xs">label</span>
+  <span class="text-gray-800 text-xs ubuntu-font">
+    <slot></slot>
+  </span>
 </template>
 
 <script>
