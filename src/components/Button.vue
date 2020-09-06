@@ -2,7 +2,7 @@
   <div>
     <button
       :disabled="disabled"
-      :class="[disabled ? `disabled-${variant}` : `button button-${variant}-${color}`, border, buttonSize, shadow]"
+      :class="[mainButtonStyle, border, buttonSize, shadow]"
       class="flex flex-row justify-center items-center noto-font mt-4"
     >
       <i v-if="startIcon" class="material-icons mr-2 text-sm">{{ startIcon }}</i>
@@ -55,6 +55,9 @@ export default {
         ? "shadow-lg"
         : "";
     },
+    mainButtonStyle() {
+      return this.disabled ? `disabled-${this.variant}` : `button button-${this.variant}-${this.color}`
+    }
   },
 };
 </script>
